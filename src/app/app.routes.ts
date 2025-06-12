@@ -3,9 +3,9 @@ import { ConfigComponent } from './config.component';
 import { PlayerComponent } from './player.component';
 
 export const routes: Routes = [
-  { path: '', component: ConfigComponent },
+  { path: 'config', component: ConfigComponent },
   { path: 'player', component: PlayerComponent },
-  { path: '**', redirectTo: '' },
+  { path: '**', redirectTo: 'config' },
 ];
 
 export const appRouter = provideRouter(routes);
