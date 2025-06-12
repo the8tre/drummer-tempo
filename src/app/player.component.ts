@@ -80,21 +80,28 @@ export class PlayerComponent {
     } else if (x > (2 * width) / 3) {
       this.nextSong();
     } else {
-      this.router.navigate(['/']);
+      this.backToConfig();
     }
   }
 
   nextSong() {
     if (this.currentIndex < this.songs.length - 1) {
       this.currentIndex++;
-      this.setFlashInterval(this.songs[this.currentIndex].bpm);
+      this.stopFlashing();
+      this.startFlashing();
     }
   }
 
   prevSong() {
     if (this.currentIndex > 0) {
       this.currentIndex--;
-      this.setFlashInterval(this.songs[this.currentIndex].bpm);
+      this.stopFlashing();
+      this.startFlashing();
     }
+  }
+
+  backToConfig() {
+    this.stopFlashing();
+    this.router.navigate(['/']);
   }
 }
