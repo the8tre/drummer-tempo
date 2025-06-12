@@ -1,0 +1,49 @@
+.fullscreen {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: white;
+  font-size: 2rem;
+  background-color: var(--background-color, #000);
+  transition: background-color 0.5s ease-in;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.fullscreen.flash {
+  background-color: var(--flash-color, #fff);
+  transition: background-color 0.05s ease-out;
+}
+
+.song-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 100%;
+  text-shadow:
+      -2px -2px 0 #000,
+      2px -2px 0 #000,
+      -2px 2px 0 #000,
+      2px 2px 0 #000,
+      -3px 0px 0 #000,
+      3px 0px 0 #000,
+      0px -3px 0 #000,
+      0px 3px 0 #000;
+}
+
+.song-info h1 {
+  font-size: 8vw;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100vw;
+  margin: 0;
+}
+
+.song-info h2 {
+  font-size: 4vw;
+  margin-top: 0.5rem;
+}

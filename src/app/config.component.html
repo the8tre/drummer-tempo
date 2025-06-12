@@ -1,0 +1,10 @@
+<div class="config">
+  <h2>Song List</h2>
+  <div *ngFor="let song of songs; let i = index">
+    <input [(ngModel)]="songs[i].name" placeholder="Song Name" />
+    <input [(ngModel)]="songs[i].bpm" type="number" placeholder="BPM" />
+    <button (click)="removeSong(i)">Remove</button>
+  </div>
+  <button (click)="addSong()">Add Song</button>
+  <button (click)="startApp()">Start</button>
+</div>
