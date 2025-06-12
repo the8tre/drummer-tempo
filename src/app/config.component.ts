@@ -16,7 +16,36 @@ interface Song {
   imports: [CommonModule, FormsModule],
 })
 export class ConfigComponent {
-  songs: Song[] = [];
+  songs: Song[] = [
+    {
+      name: 'My Immortal',
+      bpm: 158,
+    },
+    {
+      name: 'Black Velvet',
+      bpm: 91,
+    },
+    {
+      name: 'Locked Out Of Heaven',
+      bpm: 144,
+    },
+    {
+      name: 'Back To Black',
+      bpm: 123,
+    },
+    {
+      name: "What's Up",
+      bpm: 134,
+    },
+    {
+      name: "L'Envie",
+      bpm: 74,
+    },
+    {
+      name: "L'Envie rapide",
+      bpm: 160,
+    },
+  ];
 
   constructor(private router: Router) {
     const stored = localStorage.getItem('songs');
