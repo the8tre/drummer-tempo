@@ -1,6 +1,1 @@
-<div *ngIf="!started">
-  <app-config (start)="onStart($event)"></app-config>
-</div>
-<div *ngIf="started">
-  <app-player [songs]="songs" (stop)="onStop()"></app-player>
-</div>
+<router-outlet></router-outlet>

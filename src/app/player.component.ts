@@ -1,13 +1,6 @@
-import {
-  Component,
-  Input,
-  Output,
-  EventEmitter,
-  HostListener,
-  Renderer2,
-  ElementRef,
-} from '@angular/core';
+import { Component, HostListener, Renderer2, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-player',
@@ -17,37 +10,50 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./player.component.css'],
 })
 export class PlayerComponent {
-  @Input() songs: { name: string; bpm: number }[] = [];
-  @Output() stop = new EventEmitter<void>();
+  songs: { name: string; bpm: number }[] = [];
   currentIndex = 0;
-  flashing = false;
-  intervalId: any;
+  isFlashing = false;
+  flashInterval: any;
 
-  constructor(private renderer: Renderer2, private el: ElementRef) {}
+  constructor(
+    private router: Router,
+    private renderer: Renderer2,
+    private el: ElementRef
+  ) {}
 
   ngOnInit() {
+    const stored = localStorage.getItem('songs');
+    if (stored) {
+      this.songs = JSON.parse(stored);
+    }
     this.startFlashing();
   }
 
   ngOnDestroy() {
-    clearInterval(this.intervalId);
+    clearInterval(this.flashInterval);
   }
 
   startFlashing() {
     this.setFlashInterval(this.songs[this.currentIndex]?.bpm);
   }
 
+  stopFlashing() {
+    clearInterval(this.flashInterval);
+    this.isFlashing = false;
+  }
+
   setFlashInterval(bpm: number) {
-    clearInterval(this.intervalId);
+    this.isFlashing = true;
+    clearInterval(this.flashInterval);
     const interval = 60000 / bpm;
     const flashDuration = interval * 0.2; // 20% of interval for flash fade-out
     const idleDuration = interval - flashDuration;
 
     this.updateTransitionStyles(flashDuration);
 
-    this.intervalId = setInterval(() => {
-      this.flashing = true;
-      setTimeout(() => (this.flashing = false), flashDuration);
+    this.flashInterval = setInterval(() => {
+      this.isFlashing = true;
+      setTimeout(() => (this.isFlashing = false), flashDuration);
     }, interval);
   }
 
@@ -60,7 +66,7 @@ export class PlayerComponent {
       this.renderer.setStyle(
         root,
         'transition',
-        this.flashing ? flashStyle : fadeStyle
+        this.isFlashing ? flashStyle : fadeStyle
       );
     }
   }
@@ -74,7 +80,7 @@ export class PlayerComponent {
     } else if (x > (2 * width) / 3) {
       this.nextSong();
     } else {
-      this.stop.emit();
+      this.router.navigate(['/']);
     }
   }
 
