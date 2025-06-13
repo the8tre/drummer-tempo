@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build --base-href /drummer-tempo/",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "dist": "ng build --base-href /drummer-tempo/ && rm -rf docs && cp -rf dist/drummer-tempo/browser docs"
   },
   "private": true,
   "dependencies": {
