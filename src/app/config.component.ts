@@ -3,9 +3,10 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
-interface Song {
+export interface Song {
   name: string;
   bpm: number;
+  duration?: number; // in seconds
 }
 
 @Component({
@@ -55,7 +56,7 @@ export class ConfigComponent {
   }
 
   addSong() {
-    this.songs.push({ name: '', bpm: 120 });
+    this.songs.push({ name: '', bpm: 120, duration: undefined });
     this.save();
   }
 
@@ -71,5 +72,25 @@ export class ConfigComponent {
   startPlayer() {
     this.save();
     this.router.navigate(['/player']);
+  }
+
+  moveUp(index: number) {
+    if (index > 0) {
+      [this.songs[index - 1], this.songs[index]] = [
+        this.songs[index],
+        this.songs[index - 1],
+      ];
+      this.save();
+    }
+  }
+
+  moveDown(index: number) {
+    if (index < this.songs.length - 1) {
+      [this.songs[index + 1], this.songs[index]] = [
+        this.songs[index],
+        this.songs[index + 1],
+      ];
+      this.save();
+    }
   }
 }

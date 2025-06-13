@@ -1,6 +1,7 @@
 import { Component, HostListener, Renderer2, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { Song } from './config.component';
 
 @Component({
   selector: 'app-player',
@@ -14,6 +15,8 @@ export class PlayerComponent {
   currentIndex = 0;
   isFlashing = false;
   flashInterval: any;
+  autoNextTimeout: any;
+  flashTimeout: any;
 
   constructor(
     private router: Router,
@@ -30,21 +33,24 @@ export class PlayerComponent {
   }
 
   ngOnDestroy() {
-    clearInterval(this.flashInterval);
+    this.stopFlashing();
   }
 
   startFlashing() {
-    this.setFlashInterval(this.songs[this.currentIndex]?.bpm);
+    this.setFlashInterval(this.songs[this.currentIndex]);
   }
 
   stopFlashing() {
-    clearInterval(this.flashInterval);
     this.isFlashing = false;
+    this.updateTransitionStyles(0);
+    clearInterval(this.flashInterval);
+    clearTimeout(this.autoNextTimeout);
+    clearTimeout(this.flashTimeout);
   }
 
-  setFlashInterval(bpm: number) {
+  setFlashInterval(song: Song) {
     this.isFlashing = true;
-    clearInterval(this.flashInterval);
+    const bpm = song?.bpm;
     const interval = 60000 / bpm;
     const flashDuration = interval * 0.2; // 20% of interval for flash fade-out
     const idleDuration = interval - flashDuration;
@@ -53,8 +59,17 @@ export class PlayerComponent {
 
     this.flashInterval = setInterval(() => {
       this.isFlashing = true;
-      setTimeout(() => (this.isFlashing = false), flashDuration);
+      this.flashTimeout = setTimeout(
+        () => (this.isFlashing = false),
+        flashDuration
+      );
     }, interval);
+
+    if (song.duration && song.duration > 0) {
+      this.autoNextTimeout = setTimeout(() => {
+        this.nextSong();
+      }, song.duration * 1000);
+    }
   }
 
   updateTransitionStyles(durationMs: number) {
