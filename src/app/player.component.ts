@@ -1,8 +1,14 @@
-import { Component, HostListener, Renderer2, ElementRef } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  Renderer2,
+  ElementRef,
+  inject,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
-import { Song } from './config.component';
-
+import { ActivatedRoute, Router } from '@angular/router';
+import { Setlist, Song } from './home.component';
+import { setPostSignalSetFn } from '@angular/core/primitives/signals';
 @Component({
   selector: 'app-player',
   standalone: true,
@@ -11,12 +17,18 @@ import { Song } from './config.component';
   styleUrls: ['./player.component.css'],
 })
 export class PlayerComponent {
-  songs: { name: string; bpm: number }[] = [];
+  private route = inject(ActivatedRoute);
+  set: Setlist = {
+    name: '',
+    songs: [],
+  };
+  // Current song index in the set
   currentIndex = 0;
   isFlashing = false;
   flashInterval: any;
   autoNextTimeout: any;
   flashTimeout: any;
+  setName: string = '';
 
   constructor(
     private router: Router,
@@ -25,11 +37,15 @@ export class PlayerComponent {
   ) {}
 
   ngOnInit() {
-    const stored = localStorage.getItem('songs');
-    if (stored) {
-      this.songs = JSON.parse(stored);
-    }
-    this.startFlashing();
+    this.route.params.subscribe((params) => {
+      this.setName = decodeURIComponent(params['name']);
+      const rawSets = localStorage.getItem('drummer-cue-sets');
+      if (rawSets) {
+        const sets = JSON.parse(rawSets);
+        this.set = sets.find((set: Setlist) => set.name === this.setName);
+      }
+      this.startFlashing();
+    });
   }
 
   ngOnDestroy() {
@@ -37,7 +53,9 @@ export class PlayerComponent {
   }
 
   startFlashing() {
-    this.setFlashInterval(this.songs[this.currentIndex]);
+    if (this.set) {
+      this.setFlashInterval(this.set.songs[this.currentIndex]);
+    }
   }
 
   stopFlashing() {
@@ -100,7 +118,7 @@ export class PlayerComponent {
   }
 
   nextSong() {
-    if (this.currentIndex < this.songs.length - 1) {
+    if (this.set && this.currentIndex < this.set.songs.length - 1) {
       this.currentIndex++;
       this.stopFlashing();
       this.startFlashing();
@@ -117,6 +135,6 @@ export class PlayerComponent {
 
   backToConfig() {
     this.stopFlashing();
-    this.router.navigate(['/']);
+    this.router.navigate(['/set/' + encodeURIComponent(this.setName)]);
   }
 }

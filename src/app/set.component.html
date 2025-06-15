@@ -1,8 +1,21 @@
 <div class="config">
-  <h2>Song List</h2>
+  <div class="header">
+    <button (click)="goHome()">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        width="24"
+        height="24"
+      >
+        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+      </svg>
+    </button>
+    <span class="title">{{ set.name }}</span>
+  </div>
 
   <div class="song-list">
-    <div class="song-row" *ngFor="let song of songs; let i = index">
+    <div class="song-row" *ngFor="let song of set.songs; let i = index">
       <div class="song-line-1">
         <button (click)="moveUp(i)" class="reorder">↑</button>
         <input

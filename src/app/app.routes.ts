@@ -1,12 +1,14 @@
 import { provideRouter, Routes } from '@angular/router';
-import { ConfigComponent } from './config.component';
+import { SetComponent } from './set.component';
 import { PlayerComponent } from './player.component';
+import { HomeComponent } from './home.component';
 
 export const routes: Routes = [
-  { path: 'config', component: ConfigComponent },
-  { path: 'player', component: PlayerComponent },
-  { path: '', redirectTo: 'config', pathMatch: 'full' },
-  { path: '**', redirectTo: 'config' },
+  { path: 'home', component: HomeComponent },
+  { path: 'set/:name', component: SetComponent },
+  { path: 'player/:name', component: PlayerComponent },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: '**', redirectTo: 'home' },
 ];
 
 export const appRouter = provideRouter(routes);

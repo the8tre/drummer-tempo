@@ -1,0 +1,41 @@
+<div class="config">
+  <h2>🥁 Drummer's Cue 👀</h2>
+
+  <div class="set-list">
+    <div class="set-row" *ngFor="let set of sets; let i = index">
+      <a (click)="openSet(set.name)" class="name"
+        >{{ i + 1 }}. {{ set.name }}</a
+      >
+      <button (click)="renameSet(set.name)">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          width="16"
+          height="16"
+        >
+          <path
+            d="M3 17.25V21h3.75l11.06-11.06-3.75-3.75L3 17.25zm3.04.71L14.06 9.94l1.5 1.5-8.02 8.02H6.04v-1.5zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
+          />
+        </svg>
+      </button>
+      <button (click)="removeSet(set.name)">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          width="16"
+          height="16"
+        >
+          <path
+            d="M3 6h18v2H3V6zm2 3h14v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V9zm5 2v9h2v-9H10zm4 0v9h2v-9h-2zM9 4V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1h5v2H4V4h5z"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button (click)="addSet()">Add Set</button>
+  </div>
+</div>

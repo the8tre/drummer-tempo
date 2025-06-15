@@ -1,8 +1,8 @@
 <div class="fullscreen" [ngClass]="{ flash: isFlashing }">
   <div class="song-info">
-    <h1>{{ songs[currentIndex].name }}</h1>
-    <h2 *ngIf="songs[currentIndex]?.bpm">
-      ({{ songs[currentIndex].bpm }} BPM)
+    <h1>{{ set.songs[currentIndex].name }}</h1>
+    <h2 *ngIf="set.songs[currentIndex]?.bpm">
+      ({{ set.songs[currentIndex].bpm }} BPM)
     </h2>
   </div>
 </div>
