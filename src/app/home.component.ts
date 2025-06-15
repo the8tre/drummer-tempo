@@ -91,10 +91,12 @@ export class HomeComponent {
   }
 
   removeSet(setName: string) {
-    const index = this.sets.findIndex((set) => set.name === setName);
-    if (index === -1) return;
-    this.sets.splice(index, 1);
-    this.save();
+    if (window.confirm(`Do you really want to delete "${setName}"?`)) {
+      const index = this.sets.findIndex((set) => set.name === setName);
+      if (index === -1) return;
+      this.sets.splice(index, 1);
+      this.save();
+    }
   }
 
   save() {
